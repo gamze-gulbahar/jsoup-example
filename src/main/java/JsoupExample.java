@@ -3,6 +3,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javax.xml.ws.Response;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +16,24 @@ public class JsoupExample {
 
     static Document loadDocumentFromURL(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
+        return doc;
+    }
+
+    static Document getDocUserAgent(String url) throws IOException {
+        Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Linux; <Android Version>; <Build Tag etc.>) " +
+                "AppleWebKit/<WebKit Rev> (KHTML, like Gecko) " +
+                "Chrome/<Chrome Rev> Mobile Safari/<WebKit Rev>").get();
+        File file = new File("/Users/gamze/IdeaProjects/JsoupExample/mobile.html");
+
+        if (file.createNewFile()){
+            FileWriter writer = new FileWriter(file);
+            writer.write(doc.toString());
+            writer.close();
+        } else {
+            FileWriter writer = new FileWriter(file);
+            writer.write(doc.toString());
+            writer.close();
+        }
         return doc;
     }
     static void getOneImage(Document doc){
@@ -72,7 +93,7 @@ public class JsoupExample {
 
         System.out.println("---------------------------------");
         getAllLinksInOnePageWithPagination(productsUrl);
-
+        getDocUserAgent(productUrl);
     }
 
 }
